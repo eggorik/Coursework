@@ -14,12 +14,10 @@ typedef struct splaytree_node {
 
 splaytree_node* splaytree_left_rotate(splaytree_node* x);
 splaytree_node* splaytree_right_rotate(splaytree_node* y);
-splaytree_node* zig(splaytree_node* x);
-splaytree_node* zigzag(splaytree_node* x);
-splaytree_node* zigzig(splaytree_node* x);
 splaytree_node* splay(splaytree_node* x);
 splaytree_node* createnode(int key);
 splaytree_node* insert(splaytree_node* root, int key);
 splaytree_node* splaytree_lookup(splaytree_node* root, int key);
 splaytree_node* deleteNode(splaytree_node* root, int key);
-splaytree_node* findMax(splaytree_node* node);
+void VisualizeDotFile(splaytree_node* root, const char* filenamePart);
+void generateDotFile(FILE* file, splaytree_node* root);

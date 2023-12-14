@@ -8,8 +8,6 @@ void left_rotate(splaytree_node* x) {
     }
     y->parent = x->parent;
     if (x->parent == NULL) {
-        // x был корнем дерева
-        // y теперь становится корнем
     } else if (x == x->parent->left) {
         x->parent->left = y;
     } else {
@@ -19,7 +17,6 @@ void left_rotate(splaytree_node* x) {
     x->parent = y;
 }
 
-// Вспомогательная функция для поворота вправо
 void right_rotate(splaytree_node* y) {
     splaytree_node* x = y->left;
     y->left = x->right;
@@ -28,8 +25,6 @@ void right_rotate(splaytree_node* y) {
     }
     x->parent = y->parent;
     if (y->parent == NULL) {
-        // y был корнем дерева
-        // x теперь становится корнем
     } else if (y == y->parent->left) {
         y->parent->left = x;
     } else {
@@ -39,14 +34,13 @@ void right_rotate(splaytree_node* y) {
     y->parent = x;
 }
 
-// Основная функция splay
 splaytree_node* splay(splaytree_node* x) {
     while (x->parent != NULL) {
         splaytree_node* parent = x->parent;
         splaytree_node* grandparent = parent->parent;
 
         if (grandparent == NULL) {
-            // Zig case
+            // Zig
             if (x == parent->left) {
                 right_rotate(parent);
             } else {
@@ -54,15 +48,15 @@ splaytree_node* splay(splaytree_node* x) {
             }
         } else {
             if (x == parent->left && parent == grandparent->left) {
-                // Zig-Zig case
+                // Zig-Zig 
                 right_rotate(grandparent);
                 right_rotate(parent);
             } else if (x == parent->right && parent == grandparent->right) {
-                // Zig-Zig case
+                // Zig-Zig
                 left_rotate(grandparent);
                 left_rotate(parent);
             } else {
-                // Zig-Zag case
+                // Zig-Zag
                 if (x == parent->left) {
                     right_rotate(parent);
                     left_rotate(grandparent);
@@ -118,7 +112,7 @@ splaytree_node* insert(splaytree_node* root, int key) {
 
 splaytree_node* splaytree_lookup(splaytree_node* root, int key) {
     if (root == NULL) {
-        return NULL; // Если дерево пусто, возвращаем NULL
+        return NULL;
     }
 
     splaytree_node* current = root;
@@ -129,51 +123,35 @@ splaytree_node* splaytree_lookup(splaytree_node* root, int key) {
             current = current->right;
         } else {
             printf("Узел с заданным ключом не найден\n");
-            break; // Если ключ не найден, прерываем цикл
+            break;
         }
     }
 
-    // Выполняем splay для последнего посещенного узла (найденного или ближайшего)
     return splay(current);
 }
 
-
-splaytree_node* findMax(splaytree_node* root) {
-    if (root == NULL) {
-        return NULL;
-    }
-    while (root->right != NULL) {
-        root = root->right;
-    }
-    return root;
-}
-
-// Удалить узел с ключом key из дерева с корнем root
 splaytree_node* deleteNode(splaytree_node* root, int key) {
     if (root == NULL) {
         return NULL;
     }
 
-    // Ищем узел, который нужно удалить
     root = splaytree_lookup(root, key);
 
-    // Если ключ не найден, то ничего не удаляем
     if (root->key != key) {
         return root;
     }
 
-    // Найденный узел - корень, значит удаляем его
     splaytree_node* temp = root;
     if (root->left == NULL) {
         root = root->right;
         if (root != NULL) {
-            root->parent = NULL; // Устанавливаем родителя для нового корня
+            root->parent = NULL; 
         }
     } else {
         root = splay(root->left);
         root->right = temp->right;
         if (temp->right != NULL) {
-            temp->right->parent = root; // Устанавливаем родителя для правого поддерева
+            temp->right->parent = root; 
         }
     }
 
